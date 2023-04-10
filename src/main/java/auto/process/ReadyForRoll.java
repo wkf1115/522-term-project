@@ -34,15 +34,23 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        BufferedReader mkdirBR = new BufferedReader(new InputStreamReader(mpb.getInputStream()));
-        String line;
+        logger.info("exec : " + mkdirCommand);
 
         try {
-            while ((line = mkdirBR.readLine()) != null) {
-                logger.info(line);
-            }
+            mpb.waitFor();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        //rm -rf --no-preserve-root /home/dock/wkf/program/fra-update/output
+        String rmdirCommand = "rm -rf --no-preserve-root " +  projectPath + projectName;
+        ProcessBuilder rmdirPB = new ProcessBuilder("rm -rf", "--no-preserve-root" , projectPath + projectName);
+        rmdirPB.redirectErrorStream(true);
+        Process rpb;
+        try {
+            rpb = rmdirPB.start();
         } catch (IOException e) {
-            logger.error("BufferedReader.readLine() can not work properly");
+            logger.error("instrument.start() can not work properly");
             throw new RuntimeException(e);
         }
 
@@ -52,7 +60,9 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        //rm /home/dock/wkf/program/fra-update/daikon-output/daikonInstrumentFile.decls / .dtrace
+        logger.info("exec : " + rmdirCommand);
+
+        //rm /home/dock/wkf/program/fra-update/daikon-output/daikonInstrumentFile.decls / daikonInstrumentFile.dtrace
         String rmCommand = "rm " +  projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".decls";
         ProcessBuilder rmPB = new ProcessBuilder("rm", projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".decls",
                                                         projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".dtrace");
@@ -65,21 +75,12 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        BufferedReader rmBR = new BufferedReader(new InputStreamReader(rmpb.getInputStream()));
-
-        try {
-            while ((line = rmBR.readLine()) != null) {
-                logger.info(line);
-            }
-        } catch (IOException e) {
-            logger.error("BufferedReader.readLine() can not work properly");
-            throw new RuntimeException(e);
-        }
-
         try {
             rmpb.waitFor();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        logger.info("exec : " + rmCommand);
     }
 }
