@@ -24,6 +24,7 @@ public class ReadyForRoll implements Runnable{
 
         //mkdir /home/dock/wkf/program/fra-update/daikon-output
         String mkdirCommand = "mkdir " +  projectPath + projectName + "/daikon-output";
+        logger.info("exec : " + mkdirCommand);
         ProcessBuilder mkdirPB = new ProcessBuilder("mkdir", projectPath + projectName + "/daikon-output");
         mkdirPB.redirectErrorStream(true);
         Process mpb;
@@ -34,8 +35,6 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        logger.info("exec : " + mkdirCommand);
-
         try {
             mpb.waitFor();
         } catch (InterruptedException e) {
@@ -44,6 +43,7 @@ public class ReadyForRoll implements Runnable{
 
         //rm -rf --no-preserve-root /home/dock/wkf/program/fra-update/output
         String rmdirCommand = "rm -rf --no-preserve-root " +  projectPath + projectName + "/output";
+        logger.info("exec : " + rmdirCommand);
         ProcessBuilder rmdirPB = new ProcessBuilder("rm", "-rf", "--no-preserve-root" , projectPath + projectName + "/output");
         rmdirPB.redirectErrorStream(true);
         Process rpb;
@@ -60,10 +60,10 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        logger.info("exec : " + rmdirCommand);
 
         //rm /home/dock/wkf/program/fra-update/daikon-output/daikonInstrumentFile.decls / daikonInstrumentFile.dtrace
         String rmCommand = "rm " +  projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".decls";
+        logger.info("exec : " + rmCommand);
         ProcessBuilder rmPB = new ProcessBuilder("rm", projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".decls",
                                                         projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".dtrace");
         rmPB.redirectErrorStream(true);
@@ -81,6 +81,5 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
-        logger.info("exec : " + rmCommand);
     }
 }

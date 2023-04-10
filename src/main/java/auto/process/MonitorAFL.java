@@ -27,7 +27,7 @@ public class MonitorAFL implements Runnable{
 
         //make afl -C /home/dock/wkf/program/fra-update/
         String instrumentCommand = "make afl -C " +  projectPath + projectName + "/";
-        logger.info("exec " + instrumentCommand);
+        logger.info("exec :" + instrumentCommand);
         ProcessBuilder instrumentPB = new ProcessBuilder("make", "afl", "-C", projectPath + projectName + "/");
         instrumentPB.redirectErrorStream(true);
         Process ipb;
@@ -39,22 +39,11 @@ public class MonitorAFL implements Runnable{
         }
 
         BufferedReader instrumentBR = new BufferedReader(new InputStreamReader(ipb.getInputStream()));
-        String line;
-
-        try {
-            while ((line = instrumentBR.readLine()) != null) {
-                logger.info(line);
-            }
-        } catch (IOException e) {
-            logger.error("BufferedReader.readLine() can not work properly");
-            throw new RuntimeException(e);
-        }
         try {
             ipb.waitFor();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
 
         String runCommand = "make aflfuzz -C " +  projectPath + projectName + "/";
         logger.info("exec " + runCommand);
@@ -70,18 +59,21 @@ public class MonitorAFL implements Runnable{
         }
 
         BufferedReader runBR = new BufferedReader(new InputStreamReader(rpb.getInputStream()));
+        String line;
         try {
             while (!(line = runBR.readLine()).contains("All right - fork server is up.")) {
                 logger.info("starting AFL....");
             }
             latch.countDown();
             logger.info("AFL is running!");
-            while ((line = runBR.readLine()) != null) {
+            while ((line = runBR.readLine()).contains("Entering queue cycle")) {
                 logger.info(line);
             }
         } catch (IOException e) {
             logger.error("BufferedReader.readLine() can not work properly");
             throw new RuntimeException(e);
+        } catch (NullPointerException e){
+            logger.error("There is something wrong with AFL, please check!");
         }
         try {
             rpb.waitFor();
