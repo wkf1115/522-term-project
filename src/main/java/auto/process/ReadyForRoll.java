@@ -23,14 +23,14 @@ public class ReadyForRoll implements Runnable{
         String daikonInstrumentFile = yaml.get("daikonInstrumentFile");
 
         //mkdir /home/dock/wkf/program/fra-update/daikon-output
-        String mkdirCommand = "mkdir " +  projectPath + projectName;
-        ProcessBuilder mkdirPB = new ProcessBuilder("mkdir", projectPath + projectName);
+        String mkdirCommand = "mkdir " +  projectPath + projectName + "/daikon-output";
+        ProcessBuilder mkdirPB = new ProcessBuilder("mkdir", projectPath + projectName + "/daikon-output");
         mkdirPB.redirectErrorStream(true);
         Process mpb;
         try {
             mpb = mkdirPB.start();
         } catch (IOException e) {
-            logger.error("instrument.start() can not work properly");
+            logger.error("mkdir() can not work properly");
             throw new RuntimeException(e);
         }
 
@@ -43,19 +43,19 @@ public class ReadyForRoll implements Runnable{
         }
 
         //rm -rf --no-preserve-root /home/dock/wkf/program/fra-update/output
-        String rmdirCommand = "rm -rf --no-preserve-root " +  projectPath + projectName;
-        ProcessBuilder rmdirPB = new ProcessBuilder("rm -rf", "--no-preserve-root" , projectPath + projectName);
+        String rmdirCommand = "rm -rf --no-preserve-root " +  projectPath + projectName + "/output";
+        ProcessBuilder rmdirPB = new ProcessBuilder("rm -rf", "--no-preserve-root" , projectPath + projectName + "/output");
         rmdirPB.redirectErrorStream(true);
         Process rpb;
         try {
             rpb = rmdirPB.start();
         } catch (IOException e) {
-            logger.error("instrument.start() can not work properly");
+            logger.error("rm -rf can not work properly");
             throw new RuntimeException(e);
         }
 
         try {
-            mpb.waitFor();
+            rpb.waitFor();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
