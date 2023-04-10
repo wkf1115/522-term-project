@@ -30,6 +30,8 @@ public class MonitorDaikon implements Runnable{
 
         oldInvariances = new ConcurrentLinkedDeque<>();
 
+        int times = 0;
+
         //start instrument
         // gcc -gdwarf-2 -no-pie fra-update.c -o fra-update-daikon
         String instrumentCommand = "gcc -gdwarf-2 -no-pie " +  projectName + ".c -o " + daikonInstrumentFile;
@@ -48,26 +50,12 @@ public class MonitorDaikon implements Runnable{
         String line;
 
         try {
-            while ((line = instrumentBR.readLine()) != null) {
-                logger.info(line);
-            }
-        } catch (IOException e) {
-            logger.error("BufferedReader.readLine() can not work properly");
-            throw new RuntimeException(e);
-        }
-        try {
             ipb.waitFor();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        logger.info("Start daikon!!");
-        FileWriter fw;
-        try {
-            fw = new FileWriter("interesting_input_pool.txt", true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        logger.info("Start invariant generation now");
 
         while (true) {
             StringBuffer sbInput = new StringBuffer();
@@ -102,7 +90,7 @@ public class MonitorDaikon implements Runnable{
                     throw new RuntimeException(e);
                 }
 
-                logger.error("!!!!!!input : " + sbInput);
+                logger.error("now dealing with input : " + sbInput);
                 OutputStream inputpb = tpb.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(inputpb);
                 BufferedWriter bw = new BufferedWriter(osw);
@@ -118,7 +106,9 @@ public class MonitorDaikon implements Runnable{
                     throw new RuntimeException(e);
                 }
 
+                logger.info("============================================");
                 logger.info("Finish trace : " + fileName);
+                logger.info("============================================");
 
                 //java -Xmx3600m -cp $DAIKONDIR/daikon.jar daikon.Daikon daikon-output/fra1.dtrace daikon-output/fra-update-daikon.decls
                 String analysisCommand = "java -Xmx3600m -cp $DAIKONDIR/daikon.jar daikon.Daikon daikon-output/" + daikonInstrumentFile + ".dtrace " + projectPath + projectName + "/daikon-output/" + daikonInstrumentFile + ".decls";
@@ -152,20 +142,24 @@ public class MonitorDaikon implements Runnable{
 
                 newInvariances = GenerateInvarince.generate(sb.toString());
 
-//                oldInvariances.stream().forEach(e -> {
-//                    logger.error("oldInv : " + e);
-//                });
-//
-//                newInvariances.stream().forEach(e -> {
-//                    logger.error("newInv : " + e);
-//                });
-
                 if (!CompareInvarince.compare(oldInvariances, newInvariances)) {
                     //save input
                     try {
+                        FileWriter fw = new FileWriter("res/interesting_input" + ++times + ".txt", true);
                         BufferedWriter bufferedWriter = new BufferedWriter(fw);
                         bufferedWriter.write(sbInput.toString() + "\n");
+                        bufferedWriter.write("============================================\n");
+                        if(oldInvariances.peek() == null){
+                            bufferedWriter.write("null");
+                        }else bufferedWriter.write(oldInvariances.peek().getOriginalType());
+                        bufferedWriter.write("============================================\n");
+                        bufferedWriter.write("============================================\n");
+                        if(newInvariances.peek() == null){
+                            bufferedWriter.write("null");
+                        }else bufferedWriter.write(newInvariances.peek().getOriginalType());
+                        bufferedWriter.write("============================================\n");
                         bufferedWriter.flush();
+                        bufferedWriter.close();
                         logger.info("input updated ! By using" + fileName);
                     } catch (IOException e) {
                         throw new RuntimeException(e);

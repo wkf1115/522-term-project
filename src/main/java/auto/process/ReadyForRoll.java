@@ -81,5 +81,43 @@ public class ReadyForRoll implements Runnable{
             throw new RuntimeException(e);
         }
 
+        //rm -rf --no-preserve-root res
+        String rmresCommand = "rm -rf --no-preserve-root res";
+        logger.info("exec : " + rmresCommand);
+        ProcessBuilder rmresPB = new ProcessBuilder("rm", "-rf", "--no-preserve-root" , "res");
+        rmresPB.redirectErrorStream(true);
+        Process rmrespb;
+        try {
+            rmrespb = rmresPB.start();
+        } catch (IOException e) {
+            logger.error("rm -rf res can not work properly");
+            throw new RuntimeException(e);
+        }
+
+        try {
+            rmrespb.waitFor();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        //mkdir res
+        String mkresCommand = "mkdir res";
+        logger.info("exec : " + mkresCommand);
+        ProcessBuilder mkresPB = new ProcessBuilder("mkdir", "res");
+        rmPB.redirectErrorStream(true);
+        Process mkrespb;
+        try {
+            mkrespb = mkresPB.start();
+        } catch (IOException e) {
+            logger.error("mkdir res can not work properly");
+            throw new RuntimeException(e);
+        }
+
+        try {
+            mkrespb.waitFor();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

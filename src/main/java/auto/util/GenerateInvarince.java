@@ -17,6 +17,7 @@ public class GenerateInvarince {
 
         for (int j = 1; j < sections.length; j++) {
             Invariance invariance = new Invariance();
+            invariance.setOriginalType(invarinceValue);
             Map<String, String> euqalMap = new HashMap<>();
             Map<String, String> oneOfMap = new HashMap<>();
             Map<String, String> hasOnlyOneMap = new HashMap<>();

@@ -31,6 +31,9 @@ public class Main {
 
         try {
             initThread.join();
+            logger.info("============================================");
+            logger.info("program is ready now");
+            logger.info("============================================");
         } catch (InterruptedException e) {
             logger.error("can not wait for init");
         }
@@ -49,8 +52,9 @@ public class Main {
             logger.error(e);
             throw new RuntimeException(e);
         }
-
+        logger.info("============================================");
         logger.info("starting queue monitor ...");
+        logger.info("============================================");
 
         BlockingQueue<String> monitorQueue = new LinkedBlockingQueue<>(1000);
 
@@ -60,7 +64,9 @@ public class Main {
         notifyWaitThread.setName("monitor-queue");
         notifyWaitThread.start();
 
+        logger.info("============================================");
         logger.info("starting daikon monitor ...");
+        logger.info("============================================");
 
         MonitorDaikon monitorDaikon = new MonitorDaikon();
         monitorDaikon.setParams(yaml, monitorQueue);

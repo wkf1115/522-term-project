@@ -22,7 +22,6 @@ public class INotifyWait implements Runnable{
     public void run() {
         String projectPath = yaml.get("projectPath");
         String projectName = yaml.get("projectName");
-        //String monitorFile = yaml.get("monitorFile");
 
         //inotifywait -m -e modify /home/dock/wkf/program/fra-update/output/queue/
         String monitorCommand = "inotifywait -m -e modify" +  projectPath + projectName + "/output/queue";
@@ -33,7 +32,7 @@ public class INotifyWait implements Runnable{
         try {
             mpb = monitorPB.start();
         } catch (IOException e) {
-            logger.error("instrument.start() can not work properly");
+            logger.error("inotifywait can not work properly");
             throw new RuntimeException(e);
         }
 
@@ -48,7 +47,7 @@ public class INotifyWait implements Runnable{
                     String lastPart = parts[parts.length - 1];
                     // /home/dock/wkf/program/fra-update/output/queue/fra-update/output/queue/filename
                     queue.put(lastPart);
-                    logger.info("queue added");
+                    logger.info("queue added 1 file");
                 }
             }
         } catch (IOException e) {

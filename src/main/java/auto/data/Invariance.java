@@ -10,6 +10,8 @@ public class Invariance {
     private Map<String, String> oneOfMap;
     private Map<String, String> hasOnlyOneMap;
 
+    private String originalType;
+
     public String getName() {
         return name;
     }
@@ -38,6 +40,14 @@ public class Invariance {
         return hasOnlyOneMap;
     }
 
+    public String getOriginalType() {
+        return originalType;
+    }
+
+    public void setOriginalType(String originalType) {
+        this.originalType = originalType;
+    }
+
     public void setHasOnlyOneMap(Map<String, String> hasOnlyOneMap) {
         this.hasOnlyOneMap = hasOnlyOneMap;
     }
@@ -62,6 +72,7 @@ public class Invariance {
                 ", euqalMap=" + euqalMap +
                 ", oneOfMap=" + oneOfMap +
                 ", hasOnlyOneMap=" + hasOnlyOneMap +
+                ", originalType='" + originalType + '\'' +
                 '}';
     }
 }

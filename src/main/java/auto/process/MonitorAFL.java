@@ -65,9 +65,11 @@ public class MonitorAFL implements Runnable{
                 logger.info("starting AFL....");
             }
             latch.countDown();
+            logger.info("============================================");
             logger.info("AFL is running!");
-            while ((line = runBR.readLine()).contains("Entering queue cycle")) {
-                logger.info(line);
+            logger.info("============================================");
+            while ((line = runBR.readLine()) != null) {
+                if (line.contains("cycle")) logger.info(line);
             }
         } catch (IOException e) {
             logger.error("BufferedReader.readLine() can not work properly");
