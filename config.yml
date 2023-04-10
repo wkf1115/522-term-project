@@ -1,0 +1,4 @@
+projectPath: /home/dock/wkf/program/
+projectName : fra-update
+monitorFile : queue_pool.txt
+daikonInstrumentFile : fra-update-daikon
