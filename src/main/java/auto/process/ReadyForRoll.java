@@ -44,7 +44,7 @@ public class ReadyForRoll implements Runnable{
 
         //rm -rf --no-preserve-root /home/dock/wkf/program/fra-update/output
         String rmdirCommand = "rm -rf --no-preserve-root " +  projectPath + projectName + "/output";
-        ProcessBuilder rmdirPB = new ProcessBuilder("rm -rf", "--no-preserve-root" , projectPath + projectName + "/output");
+        ProcessBuilder rmdirPB = new ProcessBuilder("rm", "-rf", "--no-preserve-root" , projectPath + projectName + "/output");
         rmdirPB.redirectErrorStream(true);
         Process rpb;
         try {
