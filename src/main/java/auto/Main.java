@@ -26,6 +26,7 @@ public class Main {
         ReadyForRoll readyForRoll = new ReadyForRoll();
         readyForRoll.setParams(yaml);
         Thread initThread = new Thread(readyForRoll);
+        initThread.setName("init-thread");
         initThread.start();
 
         try {
@@ -39,6 +40,7 @@ public class Main {
         MonitorAFL monitorAFL = new MonitorAFL();
         monitorAFL.setParams(yaml, latch);
         Thread aflThread = new Thread(monitorAFL);
+        aflThread.setName("afl-thread");
         aflThread.start();
 
         try {
@@ -55,6 +57,7 @@ public class Main {
         INotifyWait iNotifyWait = new INotifyWait();
         iNotifyWait.setParams(yaml, monitorQueue);
         Thread notifyWaitThread = new Thread(iNotifyWait);
+        notifyWaitThread.setName("monitor-queue");
         notifyWaitThread.start();
 
         logger.info("starting daikon monitor ...");
@@ -62,6 +65,7 @@ public class Main {
         MonitorDaikon monitorDaikon = new MonitorDaikon();
         monitorDaikon.setParams(yaml, monitorQueue);
         Thread monitorDaikonThread = new Thread(monitorDaikon);
+        monitorDaikonThread.setName("daikon-thread");
         monitorDaikonThread.start();
 
     }
