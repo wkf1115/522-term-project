@@ -36,7 +36,7 @@ public class MonitorDaikon implements Runnable{
         // gcc -gdwarf-2 -no-pie fra-update.c -o fra-update-daikon
         String instrumentCommand = "gcc -gdwarf-2 -no-pie " +  projectName + ".c -o " + daikonInstrumentFile;
         logger.info("exec " + instrumentCommand);
-        ProcessBuilder instrumentPB = new ProcessBuilder("gcc", "-gdwarf-2", "-no-pie", projectPath + projectName + ".c", "-o", daikonInstrumentFile);
+        ProcessBuilder instrumentPB = new ProcessBuilder("gcc", "-gdwarf-2", "-no-pie", projectPath + projectName + "/" + projectName + ".c", "-o", projectPath + projectName + "/" + daikonInstrumentFile);
         instrumentPB.redirectErrorStream(true);
         Process ipb;
         try {
