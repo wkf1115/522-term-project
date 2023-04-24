@@ -38,6 +38,9 @@ daikonInstrumentFile : fra-update-daikon
 
 In this example the program fra-update.c should be placed in the /home/dock/wkf/program/fra-update directory. daikonInstrumentFile is the file after binary instrumentation using daikon, it will be automatically generated in the projectPath/projectName/ folder.
 
+
+
+
 ## Result
 
 Our results (interesting inputs) will be generated in the res folder in the same directory as the jar package. Each of the txt files represents an input and contains invariants of two different programs, representing why this input is interesting (which inavriants it can change the program).
