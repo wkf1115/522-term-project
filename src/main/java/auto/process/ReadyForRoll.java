@@ -12,15 +12,15 @@ import java.util.concurrent.CountDownLatch;
 
 public class ReadyForRoll implements Runnable{
     private static final Logger logger = LogManager.getLogger(ReadyForRoll.class);
-    Map<String, String> yaml;
-    public void setParams(Map<String, String> yaml) {
+    Map<String, Object> yaml;
+    public void setParams(Map<String, Object> yaml) {
         this.yaml =  yaml;
     }
     @Override
     public void run() {
-        String projectPath = yaml.get("projectPath");
-        String projectName = yaml.get("projectName");
-        String daikonInstrumentFile = yaml.get("daikonInstrumentFile");
+        String projectPath = (String) yaml.get("projectPath");
+        String projectName = (String) yaml.get("projectName");
+        String daikonInstrumentFile = (String) yaml.get("daikonInstrumentFile");
 
         //mkdir /home/dock/wkf/program/fra-update/daikon-output
         String mkdirCommand = "mkdir " +  projectPath + projectName + "/daikon-output";

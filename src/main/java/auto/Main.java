@@ -17,10 +17,10 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
     public static void main(String[] args) {
         //get config
-        Map<String, String> yaml =  YamlConverter.convert();
-        String projectPath = yaml.get("projectPath");
-        String projectName = yaml.get("projectName");
-        String monitorFile = yaml.get("monitorFile");
+        Map<String, Object> yaml =  YamlConverter.convert();
+        String projectPath = (String) yaml.get("projectPath");
+        String projectName = (String) yaml.get("projectName");
+        String monitorFile = (String) yaml.get("monitorFile");
 
         //init
         ReadyForRoll readyForRoll = new ReadyForRoll();

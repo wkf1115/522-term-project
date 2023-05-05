@@ -51,7 +51,25 @@ public class CompareInvarince {
         StringBuilder newI = new StringBuilder();
 
         if(oldInvariances.peek() == null){
-            newI.append(newInvariances.peek().getOriginalType());
+            for (Map.Entry<String, Invariance> entry : newMap.entrySet()) {
+                String key = entry.getKey();
+                Invariance newInvariance = newMap.get(key);
+                newI.append(getStarLine());
+                newI.append(key + "\n");
+                List<String> newE = convertMapToStringList(newInvariance.getEuqalMap());
+                for(String s : newE){
+                    newI.append(redText + " +++ " + s + resetText + "\n");
+                }
+                List<String> newO = convertMapToStringList(newInvariance.getOneOfMap());
+                for(String s : newO){
+                    newI.append(redText + " +++ " + s + resetText + "\n");
+                }
+                List<String> newH = convertMapToStringList(newInvariance.getHasOnlyOneMap());
+                for(String s : newH){
+                    newI.append(redText + " +++ " + s + resetText + "\n");
+                }
+            }
+            newI.append(getStarLine());
             return getStarLine() + "null \n" + getStarLine() + newI.toString() + "\n";
         }
 

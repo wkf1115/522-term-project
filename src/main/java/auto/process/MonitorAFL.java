@@ -12,17 +12,17 @@ import java.util.concurrent.CountDownLatch;
 
 public class MonitorAFL implements Runnable{
     private static final Logger logger = LogManager.getLogger(MonitorAFL.class);
-    Map<String, String> yaml;
+    Map<String, Object> yaml;
     CountDownLatch latch;
 
-    public void setParams(Map<String, String> yaml, CountDownLatch latch) {
+    public void setParams(Map<String, Object> yaml, CountDownLatch latch) {
         this.yaml =  yaml;
         this.latch = latch;
     }
     @Override
     public void run() {
-        String projectPath = yaml.get("projectPath");
-        String projectName = yaml.get("projectName");
+        String projectPath = (String) yaml.get("projectPath");
+        String projectName = (String) yaml.get("projectName");
         //String monitorFile = yaml.get("monitorFile");
 
         //make afl -C /home/dock/wkf/program/fra-update/

@@ -11,17 +11,17 @@ import java.util.concurrent.BlockingQueue;
 
 public class INotifyWait implements Runnable{
     private static final Logger logger = LogManager.getLogger(INotifyWait.class);
-    Map<String, String> yaml;
+    Map<String, Object> yaml;
     BlockingQueue<String> queue;
 
-    public void setParams(Map<String, String> yaml, BlockingQueue<String> queue) {
+    public void setParams(Map<String, Object> yaml, BlockingQueue<String> queue) {
         this.yaml =  yaml;
         this.queue = queue;
     }
     @Override
     public void run() {
-        String projectPath = yaml.get("projectPath");
-        String projectName = yaml.get("projectName");
+        String projectPath = (String) yaml.get("projectPath");
+        String projectName = (String) yaml.get("projectName");
 
         //inotifywait -m -e modify /home/dock/wkf/program/fra-update/output/queue/
         String monitorCommand = "inotifywait -m -e modify" +  projectPath + projectName + "/output/queue";

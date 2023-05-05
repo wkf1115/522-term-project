@@ -13,7 +13,7 @@ import java.util.Map;
 public class YamlConverter {
     private static final Logger logger = LogManager.getLogger(YamlConverter.class);
 
-    public static Map<String, String> convert(){
+    public static Map<String, Object> convert(){
         InputStream inputStream = null;
         try {
             inputStream = Files.newInputStream(Paths.get("config.yml"));
@@ -23,7 +23,7 @@ public class YamlConverter {
         }
         Yaml yaml = new Yaml();
 
-        Map<String, String> data = yaml.load(inputStream);
+        Map<String, Object> data = yaml.load(inputStream);
 
         logger.info("Read config file successfully!");
         logger.info("The config information is as follows: " + data);
